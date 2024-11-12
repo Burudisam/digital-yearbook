@@ -1,0 +1,25 @@
+.success-page-container {
+  position: relative;
+  height: 100vh; /* Make it full viewport height */
+  overflow: hidden; /* Hide anything that overflows */
+}
+
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1; /* Place the video behind other content */
+  transform: translate(-50%, -50%); /* Center the video */
+}
+
+.content {
+  position: relative;
+  z-index: 1; /* Bring the content to the front */
+  color: white; /* Change text color for visibility */
+  text-align: center; /* Center text */
+  padding: 20px; /* Add some padding */
+}

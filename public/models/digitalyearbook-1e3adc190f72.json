@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "digitalyearbook",
+  "private_key_id": "1e3adc190f72877a20bbce0413075277c0016604",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDbeyzW/nFJDo4o\nY5D5mX5sEtW+aHu8gjP4o2A0v+2EdjytgtuoBpSv8xmHNIy5KUCNJ7AoBVGC9ktq\nVhiEXR04tQmZGxWZ+WUqtgcpskKAyXbozydzGJ2jnT8+OpTkAtZ3+DDRqClUr0nW\nbtszNjSm8DBqdllUPxVBM0plOW6jvQvy8GYMsRw1OG3TsqJtYJI1szplGsD6nDRi\nA2CF5OCsgO+GwVwqENVPemJh+MWYmKqV6Eym9/arW/sOzXXLvr4/VIT2+xEbvBBh\nIdUJCC/ZEc4u1wrvlBSloQ07l/8MiBlveTHveBwhbKCAYUgAaeWm5B53tspOppuh\nEj8yNFSnAgMBAAECggEAbDftwgwvW3Bb07pUL13poewfjAUEjcw9R+l2dEv2Fwwd\nmwgculqUUbUx7yKQCHQ4qeDZ0MHekQ5T3RiaehlXYTCSjPV3zzXTFh4upfaJJ+su\nQFh0ASIwCA5usoY8B7kGepzbpWSfDGxpoduDJVsi1vUzSisUnJ+GIWHi2spYrU6M\n+Y0ErNhUXD9gJRn1Z4C4VHI/Z0aWqUK7lpgKd5FYTzLgjoj4yAY9ppOosRqpJ71T\nVx6zAiOOQsKdjB/iF/hEv/hiTyR3UZHV+ExZIszb5QfuQIZ06eABMdRX+duEMsyR\n7BUXEGoT6Kv67sC5yztfKHC2V1yB+el4NqpHg6vYEQKBgQD/xFPKASAmSBOyk+oj\nRF5NyIbYBHTpVraXvR9SvRrMrpIJqJeNH2VsM5jDeSlikC4kgoWgQp/XlZ2wJxE6\n6aJPR972nW5QVmbDL9taNfVE3KwJbxw5KbZLlDdvECRfNhPAc2Bx+ApahiKBPpeC\nEl3JKt7znUpLRDsgA+PcCSBYWwKBgQDbrmHPCLDARa9N9zblud/WpXbi7Y2h5ZPI\ntotpQgRvOGv5/rpAu+4WQFxj0bK0yZa4rfrsJMmQp+8PQrQFVHVIqySaqi0s2JdM\nMXaCT1OjJdEGnGwr8QUCC9bFt1C36zyFiM3L0nhiqQcSOhs1roBkIogFaXow8JDk\nC1AGGx/GpQKBgQC68qcIDUCRmreDHSjT9GI12q/tb3yBHhfC28LseDsBh0xJcQit\nZ1h7+U7c+k/sslR37Ut885XgP4UOP9ARTrqL1o27lyEN6cmdO/rKeow3dFDvaF6p\nzbpojgLi1FqxmVZgojTJuTLgLhFEhRq7QW953jMuwDaQw2OwKAfCSo1w5wKBgQC7\nEp/mD099HJpxeWE9dfDgt90q2AKxaHBWDuVfSEHAeLqylDIFqEPSnRJQSqW1AKoi\nML4qVBV14xxX0YS9uTN7I4qzTtHTi8ojr0dtJqJhn3WF/LS9Iq0SFgTaMAZD6MWM\nLXia5mtwEOKdqe+74hMhsqpEeZL9lA6+s8d8u6JupQKBgB8e0OxLW7Q5pXTnHMGM\n7EjSDaBzwsXVx4haKu6hg56COiDx9wFelodgtmslJmxSDEarqvA2d/OYyLB4f1nF\nNXh0JQqkdZpKi0xAwOlwHeGZpZl5HvIG+husMVpU7VUWpfkMGxwfBpXM763Rm6jM\nfDXqSPqvyinR88QUepCFKCL9\n-----END PRIVATE KEY-----\n",
+  "client_email": "digital-yearbook@digitalyearbook.iam.gserviceaccount.com",
+  "client_id": "114455632017840294075",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/digital-yearbook%40digitalyearbook.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

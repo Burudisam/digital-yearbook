@@ -1,0 +1,117 @@
+/* Hero Section Styling */
+.hero {
+  background-color: black; /* Set background to pitch black */
+  position: relative;
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  overflow: hidden; /* Ensure nothing overflows outside the container */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5)); /* Gradient overlay for depth */
+}
+
+/* Background video settings */
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Content inside the hero section */
+.hero-content {
+  z-index: 1; /* Ensure the text stays above the video */
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center content */
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Soft shadow for depth */
+  border-radius: 25px; /* Rounded corners for a modern feel */
+  padding: 0 20px; /* Spacious padding for a luxurious look */
+  width: 85%; /* Responsive width for different screen sizes */
+  max-width: 900px; /* Max width for content */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect on content */
+.hero-content:hover {
+  transform: translate(-50%, -50%) scale(1.05); /* Slight scale effect for interaction */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover for emphasis */
+}
+.hero-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Main header (Title) styling */
+.hero h1 {
+  font-size: 5.5rem; /* Larger font size for more impact */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #000000; /* Black for a bold, impactful title */
+  text-shadow: 
+    0 0 10px #333333,  /* Dark gray inner glow */
+    0 0 20px #333333,  /* Middle dark gray glow */
+    0 0 40px #666666,  /* Outer gray glow */
+    0 0 80px #999999,  /* Light gray glow */
+    0 0 120px #CCCCCC; /* Faint, subtle glow */
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+/* Subtitle text styling */
+.hero p {
+  font-size: 2rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: #00FFFF; /* Neon blue color */
+  text-shadow: 
+    0 0 8px #00FFFF,    /* Inner blue glow */
+    0 0 16px #00FFFF,   /* Mid-range blue glow */
+    0 0 32px #00FFFF,   /* Outer blue glow */
+    0 0 64px #00BFFF,   /* Stronger blue shadow */
+    0 0 128px #00BFFF,  /* Wider blue glow */
+    0 0 160px #007FFF;  /* Very wide blue glow */
+  margin-bottom: 40px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* Optional: Add subtle animation to the hero text */
+@keyframes textGlow {
+  0% { text-shadow: 0 0 8px #a600ff, 0 0 16px #c800ff, 0 0 32px #a600ff, 0 0 64px #a600ff, 0 0 128px #a600ff; }
+  50% { text-shadow: 0 0 12px #a600ff, 0 0 24px #a600ff, 0 0 48px #a600ff, 0 0 96px #a600ff, 0 0 192px #a600ff; }
+  100% { text-shadow: 0 0 8px #a600ff, 0 0 16px #a600ff, 0 0 32px #a600ff, 0 0 64px #a600ff, 0 0 128px #a600ff; }
+}
+
+/* Apply animation to text */
+.hero h1, .hero p {
+  animation: textGlow 3s ease-in-out infinite; /* Smooth glowing effect */
+}
+
+/* Optional: Add a smooth scroll effect to the hero */
+html {
+  scroll-behavior: smooth;
+}
+
+
+

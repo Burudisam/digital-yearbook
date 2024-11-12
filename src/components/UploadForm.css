@@ -1,0 +1,111 @@
+.upload-container {
+  margin: 40px auto;
+  padding-top: 60px;
+  max-width: 600px;
+  background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+  border-radius: 25px;
+  box-shadow: 0px 12px 36px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.upload-container:hover {
+  box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.upload-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #495057;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.upload-input,
+.upload-textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff;
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+.upload-input:focus,
+.upload-textarea:focus {
+  border-color: #4caf50;
+  background-color: #f9fdf8;
+  outline: none;
+}
+
+.upload-file-label {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.upload-file-label:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.upload-button {
+  padding: 14px 30px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1.2rem;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.upload-status {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: #28a745;
+  font-family: 'Roboto', sans-serif;
+}
+
+.image-preview-container {
+  margin-top: 20px;
+  max-width: 320px;
+}
+
+.image-preview {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.image-preview:hover {
+  transform: scale(1.02);
+}
+
+
+

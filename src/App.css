@@ -1,7 +1,34 @@
+/* Main container takes up the full height of the viewport with a black background */
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   text-align: center;
+  background-color: #000000; /* Set background color to black */
+  color: white; /* Ensure text is visible against the black background */
+  margin: 0%;
 }
 
+
+/* Main content grows to fill the available space */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Footer should stick to the bottom */
+footer {
+  background-color: #000000;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+/* App logo animation and style */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,21 +40,23 @@
   }
 }
 
+/* App header adjustments to match the black background */
 .App-header {
-  background-color: #282c34;
+  background-color: #000000; /* Set header background color to black */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: white; /* Ensure text remains visible */
 }
 
 .App-link {
   color: #61dafb;
 }
 
+/* Logo spin animation */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

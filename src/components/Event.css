@@ -1,0 +1,172 @@
+/* General styles */
+.event-container {
+    margin: 40px auto;
+    padding: 60px 30px;
+    max-width: 900px;
+    background: linear-gradient(135deg, #ffffff, #e9edf3);
+    border-radius: 25px;
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.event-container:hover {
+    box-shadow: 0px 25px 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.event-title {
+    font-size: 2.6rem;
+    margin-bottom: 20px;
+    color: #2d3748;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Input and Textarea */
+.event-input,
+.event-textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #cfd8e3;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f6f8fb;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-input:focus,
+.event-textarea:focus {
+    border-color: #6c63ff;
+    background-color: #eaf2ff;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+    outline: none;
+}
+
+/* Button Styling */
+.share-button {
+    padding: 12px 30px;
+    background-color: #6c63ff;
+    color: white;
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.share-button:hover {
+    background-color: #5348cc;
+    transform: scale(1.05);
+}
+
+/* Gallery and Video */
+.event-gallery, .video-gallery {
+    margin: 40px 0;
+}
+
+.event-video {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-video:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Memory Wall */
+.memory-wall {
+    margin-top: 40px;
+}
+
+.memory-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.memory-input {
+    width: 70%;
+    padding: 12px;
+    border: 2px solid #cfd8e3;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.memory-input:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+    outline: none;
+}
+
+.memory-submit-button {
+    padding: 12px 25px;
+    background-color: #2ecc71;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.memory-submit-button:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+}
+
+/* Memory Item */
+.memory-item {
+    background: #f7f9fc;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 5px solid #6c63ff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.memory-item:hover {
+    background: #edf1f7;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Calendar */
+.calendar {
+    margin: 20px 0;
+}
+
+/* Social Share */
+.social-share {
+    margin-top: 40px;
+}
+
+.social-button {
+    margin: 0 12px;
+    transition: transform 0.3s ease;
+}
+
+.social-button:hover {
+    transform: scale(1.1);
+}
+
+.event-date {
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+  }
+  
+
+  
+  
