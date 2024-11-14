@@ -1,19 +1,20 @@
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
-import { Bar } from 'react-chartjs-2'; // Import Chart.js
+import { Bar } from 'react-chartjs-2';
 import { supabase } from '../supabaseClient';
-import Navbar from './Navbar'; // Import Navbar component
+import Navbar from './Navbar';
 import './VotingSystem.css';
 
 const VotingSystem = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState('');
   const [category, setCategory] = useState('');
-  const [voteWeight, setVoteWeight] = useState(1); // Weight for voting
-  const [votesData, setVotesData] = useState(null); // Store vote data for charts
+  const [voteWeight, setVoteWeight] = useState(1);
+  const [votesData, setVotesData] = useState(null);
 
   useEffect(() => {
     fetchStudents();
-    fetchVotesData(); // Fetch initial vote data
+    fetchVotesData();
   }, []);
 
   const fetchStudents = async () => {
@@ -26,19 +27,17 @@ const VotingSystem = () => {
     const { data, error } = await supabase.from('votes').select('*');
     if (error) console.error('Error fetching votes:', error);
     else {
-      const chartData = formatVotesForChart(data); // Format data for charts
+      const chartData = formatVotesForChart(data);
       setVotesData(chartData);
     }
   };
 
   const formatVotesForChart = (votes) => {
-    if (!votes || votes.length === 0) return null; // Safeguard against empty or undefined data
-
+    if (!votes || votes.length === 0) return null;
     const categoryCounts = votes.reduce((acc, vote) => {
       acc[vote.category] = acc[vote.category] ? acc[vote.category] + vote.votes_count : vote.votes_count;
       return acc;
     }, {});
-
     return {
       labels: Object.keys(categoryCounts),
       datasets: [
@@ -58,21 +57,27 @@ const VotingSystem = () => {
       alert('Please select a student and enter a category.');
       return;
     }
-
     const { data, error } = await supabase
       .from('votes')
-      .insert([{ student_id: selectedStudent, category, votes_count: voteWeight }]); // Include vote weight
+      .insert([{ student_id: selectedStudent, category, votes_count: voteWeight }]);
 
     if (error) console.error('Error voting:', error);
     else {
       alert('Vote submitted successfully!');
-      fetchVotesData(); // Refresh vote data after voting
+      fetchVotesData();
     }
   };
 
   return (
     <div>
-      <Navbar /> {/* Add the Navbar here */}
+      <Navbar />
+      {/* Aurora Effect Background */}
+      <motion.div
+        className="aurora-effect"
+        initial={{ backgroundPosition: '0% 50%' }}
+        animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+      />
       <div className="voting-container">
         <h2 className="voting-title">Vote for Most Likely To...</h2>
         <div className="voting-form">
@@ -84,9 +89,9 @@ const VotingSystem = () => {
             value={selectedStudent}
           >
             <option value="">Select a student</option>
-            {students.length > 0 ? students.map(student => (
+            {students.map(student => (
               <option key={student.id} value={student.id}>{student.name}</option>
-            )) : <option disabled>No students available</option>}
+            ))}
           </select>
           <label htmlFor="category" className="voting-label">Category:</label>
           <input

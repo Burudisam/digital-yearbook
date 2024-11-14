@@ -14,10 +14,10 @@ const Event = () => {
   const [videos, setVideos] = useState([]);
   const [memoryWall, setMemoryWall] = useState([]);
   const [newMemory, setNewMemory] = useState('');
-  const [events, setEvents] = useState([]); // Store fetched events
-  const [selectedEventDetails, setSelectedEventDetails] = useState([]); // Selected date's events
+  const [events, setEvents] = useState([]);
+  const [selectedEventDetails, setSelectedEventDetails] = useState([]);
+  const [reminder, setReminder] = useState('');
 
-  // Fetch events from Supabase on component mount
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase.from('events').select('*');
@@ -30,7 +30,6 @@ const Event = () => {
     fetchEvents();
   }, []);
 
-  // Fetch videos from Supabase storage
   useEffect(() => {
     const fetchVideos = async () => {
       const { data, error } = await supabase.storage.from('memories').list();
@@ -46,9 +45,7 @@ const Event = () => {
 
   const handleMemorySubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase
-      .from('memories')
-      .insert([{ content: newMemory, event_title: title }]);
+    const { data, error } = await supabase.from('memories').insert([{ content: newMemory, event_title: title }]);
     if (error) {
       console.error('Error saving memory:', error);
     } else {
@@ -57,13 +54,16 @@ const Event = () => {
     }
   };
 
-  // Handle calendar date click to show event details
   const handleDateClick = (selectedDate) => {
-    const eventsForDate = events.filter(event =>
-      new Date(event.event_date).toDateString() === selectedDate.toDateString()
-    );
+    const eventsForDate = events.filter(event => new Date(event.event_date).toDateString() === selectedDate.toDateString());
     setSelectedEventDetails(eventsForDate);
-    setDate(selectedDate); // Set the clicked date as selected
+    setDate(selectedDate);
+  };
+
+  const handleReminderSubmit = (e) => {
+    e.preventDefault();
+    // You can integrate email or SMS reminder APIs here
+    alert(`Reminder set for: ${reminder}`);
   };
 
   const handleShare = () => {
@@ -71,8 +71,9 @@ const Event = () => {
   };
 
   return (
-    <div>
+    <div className="event-page-container">
       <Navbar />
+      <div className="aurora-effect"></div> {/* Aurora Effect */}
       <div className="event-container">
         <h1 className="event-title">{title || 'Event Title'}</h1>
         <input
@@ -86,12 +87,20 @@ const Event = () => {
           onChange={handleDateClick}
           value={date}
           tileClassName={({ date }) => {
-            const isEventDate = events.some(event =>
-              new Date(event.event_date).toDateString() === date.toDateString()
-            );
+            const isEventDate = events.some(event => new Date(event.event_date).toDateString() === date.toDateString());
             return isEventDate ? 'event-date' : null;
           }}
         />
+        <div className="reminder-section">
+          <input
+            type="text"
+            placeholder="Set a reminder for this event"
+            value={reminder}
+            onChange={(e) => setReminder(e.target.value)}
+            className="reminder-input"
+          />
+          <button onClick={handleReminderSubmit} className="reminder-button">Set Reminder</button>
+        </div>
         <input
           type="text"
           placeholder="Location"
@@ -111,7 +120,6 @@ const Event = () => {
           onChange={(e) => setHighlights(e.target.value)}
           className="event-textarea"
         />
-
         <button onClick={handleShare} className="share-button">Share Event</button>
 
         {/* Display Event Videos */}
@@ -180,6 +188,7 @@ const Event = () => {
 };
 
 export default Event;
+
 
 
 

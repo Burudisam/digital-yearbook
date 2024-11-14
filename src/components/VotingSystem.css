@@ -2,39 +2,48 @@
 .voting-container {
   width: 90%;
   max-width: 800px;
-  margin: 0 auto;
-  padding-top: 60px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  transition: transform 0.3s ease;
-  margin-top: 40px;
+  margin: 40px auto;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.7); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .voting-container:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Title */
 .voting-title {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Form */
 .voting-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  align-items: center;
 }
 
 /* Labels */
 .voting-label {
   font-size: 1.1rem;
-  color: #555;
+  color: #eee;
+  text-align: left;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 8px;
 }
 
 /* Input Fields */
@@ -42,30 +51,36 @@
   padding: 12px 16px;
   font-size: 1rem;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 12px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f8f8;
 }
 
 .voting-select:focus, .voting-input:focus {
   border-color: #007bff;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+  outline: none;
 }
 
 /* Button */
 .vote-button {
-  padding: 12px 16px;
+  padding: 14px 22px;
   background-color: #007bff;
-  color: #fff;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
 }
 
 .vote-button:hover {
   background-color: #0056b3;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .vote-button:active {
@@ -76,28 +91,48 @@
 .chart-container {
   margin-top: 30px;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .chart-container p {
   text-align: center;
-  font-size: 1.2rem;
-  color: #777;
+  font-size: 1.1rem;
+  color: #555;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Responsive Design */
 @media (max-width: 600px) {
   .voting-container {
     width: 95%;
+    padding: 30px;
   }
 
   .voting-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .voting-label, .vote-button {
     font-size: 1rem;
   }
+
+  .voting-form {
+    gap: 10px;
+  }
+}
+
+/* Aurora Effect */
+.aurora-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at 30% 50%, rgba(128, 0, 128, 0.5), transparent),
+              radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.4), transparent),
+              radial-gradient(circle at 50% 70%, rgba(255, 0, 0, 0.15), transparent);
+  background-size: 200% 200%;
+  z-index: -1; /* Ensure it's behind content */
 }
