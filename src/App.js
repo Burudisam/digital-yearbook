@@ -8,7 +8,7 @@ import ForgotPassword from './components/ForgotPassword';
 import Login from './components/Login';
 import Memories from './components/Memories';
 import Signup from './components/Signup';
-import StudentDirectory from './components/StudentDirectory';
+import StudentDirectory from './components/Studentdirectory';
 import StudentProfile from './components/StudentProfile';
 import SuccessPage from './components/SuccessPage';
 import UploadForm from './components/UploadForm';
