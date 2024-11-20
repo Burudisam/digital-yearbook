@@ -18,6 +18,7 @@ const Upload = () => {
   const [file, setFile] = useState(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [error, setError] = useState('');
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -32,7 +33,36 @@ const Upload = () => {
   };
 
   const handleUpload = async () => {
-    // Upload logic remains the same
+    if (!file) {
+      setError('Please select a file to upload.');
+      return;
+    }
+    setError(''); // Reset error
+
+    // Check for illicit content using AWS Rekognition
+    const params = {
+      Image: {
+        Bytes: await file.arrayBuffer(),
+      },
+    };
+
+    try {
+      const response = await rekognition.detectModerationLabels(params).promise();
+
+      // If moderation labels are detected, show an error
+      const labels = response.ModerationLabels;
+      if (labels.length > 0) {
+        const foundLabels = labels.map((label) => label.Name).join(', ');
+        setError(`Inappropriate content detected: ${foundLabels}`);
+        return;
+      }
+
+      // Continue with uploading the file here (you can upload to your server or cloud storage)
+      setUploadStatus('File uploaded successfully!');
+    } catch (err) {
+      console.error(err);
+      setError('Error uploading the file. Please try again.');
+    }
   };
 
   return (
@@ -85,6 +115,7 @@ const Upload = () => {
             Upload Memory
           </button>
           {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
+          {error && <p className="error-message">{error}</p>}
         </div>
       </div>
     </div>
@@ -92,6 +123,7 @@ const Upload = () => {
 };
 
 export default Upload;
+
 
 
 
