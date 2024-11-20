@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -19,8 +18,10 @@ const useStickyNavbar = () => {
   }, []);
 };
 
-const Navbar = () => {useStickyNavbar();
+const Navbar = () => {
+  useStickyNavbar();
   const [isMenuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -31,11 +32,15 @@ const Navbar = () => {useStickyNavbar();
             Your browser does not support the video tag.
           </video>
         </Link>
-        <div className="navbar-toggle" onClick={() => setMenuOpen(!isMenuOpen)}>
-        ☰
+        {/* Hamburger menu toggle */}
+        <div
+          className="navbar-toggle"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          ☰
         </div>
+        {/* Navbar menu */}
         <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
-        <ul className="navbar-menu">
           <li className="navbar-item">
             <Link to="/" className="navbar-link">Home</Link>
           </li>
@@ -49,18 +54,17 @@ const Navbar = () => {useStickyNavbar();
             <Link to="/memories" className="navbar-link">Memories</Link>
           </li>
           <li className="navbar-item">
-            <Link to="/Event" className="navbar-link">Events</Link>
+            <Link to="/event" className="navbar-link">Events</Link>
           </li>
           <li className="navbar-item">
             <Link to="/about" className="navbar-link">About</Link>
           </li>
-        </ul>
         </ul>
       </div>
     </nav>
   );
 };
 
-
 export default Navbar;
+
 

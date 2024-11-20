@@ -114,13 +114,31 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    background-color: #000; /* Ensure background matches navbar */
+    position: absolute;
+    top: 60px; /* Adjust based on navbar height */
+    right: 0;
+    width: 100%; /* Full width for mobile */
+    z-index: 999;
+    padding: 1rem 0;
+    transform: translateY(-10px);
+    opacity: 0;
   }
 
   .navbar-menu.open {
     display: flex;
+    transform: translateY(0);
+    opacity: 1;
   }
 
+  .navbar-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #ffffff;
+  }
+
+  
   .navbar-toggle {
     display: block;
   }
