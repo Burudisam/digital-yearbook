@@ -55,10 +55,6 @@ const Navbar = () => {useStickyNavbar();
             <Link to="/about" className="navbar-link">About</Link>
           </li>
         </ul>
-        <div className="navbar-search">
-          <input type="text" placeholder="Search..." />
-          <i className="fas fa-search search-icon"></i> {/* Font Awesome search icon */}
-        </div>
         </ul>
       </div>
     </nav>
