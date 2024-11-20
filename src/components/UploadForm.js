@@ -1,15 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
 import AWS from 'aws-sdk';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
-import Navbar from './Navbar';
+import { supabase } from '../supabaseClient';
 import './UploadForm.css';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.REACT_APP_SUPABASE_URL,
-  process.env.REACT_APP_SUPABASE_KEY
-);
 
 // AWS Rekognition setup
 AWS.config.update({
@@ -41,71 +34,81 @@ const Upload = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      setError('Please select a file to upload.');
+    if (!file || !event) {
+      alert('Please provide all required details.');
       return;
     }
-    setError(''); // Reset error
-
-    // Check for illicit content using AWS Rekognition
-    const params = {
-      Image: {
-        Bytes: await file.arrayBuffer(),
-      },
-    };
+    setError('');
+    setUploadStatus(null);
 
     try {
-      const response = await rekognition.detectModerationLabels(params).promise();
-
-      // If moderation labels are detected, show an error
-      const labels = response.ModerationLabels;
-      if (labels.length > 0) {
-        const foundLabels = labels.map((label) => label.Name).join(', ');
-        setError(`Inappropriate content detected: ${foundLabels}`);
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        setError('You must be logged in to upload a memory.');
         return;
       }
 
-      // Sanitize file name to avoid issues with special characters
-    const sanitizedFileName = file.name.replace(/\s+/g, '_').toLowerCase();
-    const { data, error: uploadError } = await supabase.storage
-      .from('memories')
-      .upload(`memories/${sanitizedFileName}`, file);
+      const { data: studentData, error: studentError } = await supabase
+        .from('students')
+        .select('name')
+        .eq('id', user.id)
+        .single();
+
+      if (studentError) {
+        setError('Error fetching student information.');
+        return;
+      }
+
+      const authorName = studentData?.name || 'Anonymous';
+      const fileArrayBuffer = await file.arrayBuffer();
+
+      const rekognitionParams = {
+        Image: {
+          Bytes: fileArrayBuffer,
+        },
+      };
+
+      const rekognitionResponse = await rekognition.detectModerationLabels(rekognitionParams).promise();
+      const moderationLabels = rekognitionResponse.ModerationLabels || [];
+      if (moderationLabels.some((label) => label.Confidence > 75)) {
+        setError('Inappropriate content detected. Upload denied.');
+        return;
+      }
+
+      const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_').toLowerCase()}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('memories')
+        .upload(`memories/${fileName}`, file);
 
       if (uploadError) {
-        setError('Error uploading the file to Supabase Storage.');
+        setError('Error uploading file to storage.');
         return;
       }
 
-      // Get the file URL
-      const fileUrl = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/memories/${data.path}`;
+      const fileUrl = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/memories/${uploadData.path}`;
 
-      // Store metadata in the memories database
-      const { data: insertData, error: dbError } = await supabase
-        .from('memories') // Your Supabase table name
-        .insert([
-          {
-            event: event, // event_name column renamed to event
-            description: description,
-            image_path: fileUrl,
-          },
-        ]);
+      const { error: insertError } = await supabase
+        .from('memories')
+        .insert([{ event, description, image_url: fileUrl, author_name: authorName }]);
 
-      if (dbError) {
-        setError('Error saving metadata in the database.');
+      if (insertError) {
+        setError('Error saving memory to the database.');
         return;
       }
 
-      setUploadStatus('File uploaded and memory saved successfully!');
+      setUploadStatus('Memory uploaded successfully!');
+      setEvent('');
+      setDescription('');
+      setFile(null);
+      setFilePreviewUrl(null);
     } catch (err) {
-      console.error(err);
-      setError('Error uploading the file. Please try again.');
+      console.error('Upload Error:', err);
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
   return (
     <div className="upload-page">
-      <Navbar />
-
       {/* Aurora effect background */}
       <motion.div
         className="aurora-effect"
@@ -113,7 +116,6 @@ const Upload = () => {
         animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
       />
-
       <div className="upload-container">
         <h1 className="upload-title">Share a Memory</h1>
         <div className="upload-form">
@@ -133,19 +135,15 @@ const Upload = () => {
           <label className="upload-file-label">
             <input
               type="file"
-              accept="image/*, video/*"
+              accept="image/*"
               onChange={handleFileChange}
               className="upload-input-file"
             />
-            Upload Image or Video
+            Upload Image
           </label>
           {filePreviewUrl && (
             <div className="file-preview-container">
-              {file.type.startsWith('image/') ? (
-                <img src={filePreviewUrl} alt="Selected Preview" className="image-preview" />
-              ) : (
-                <video controls src={filePreviewUrl} className="video-preview" />
-              )}
+              <img src={filePreviewUrl} alt="Selected Preview" className="image-preview" />
             </div>
           )}
           <button onClick={handleUpload} className="upload-button">
@@ -160,7 +158,6 @@ const Upload = () => {
 };
 
 export default Upload;
-
 
 
 
