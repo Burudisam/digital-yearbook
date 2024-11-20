@@ -1,9 +1,17 @@
+import { createClient } from '@supabase/supabase-js';
 import AWS from 'aws-sdk';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import './UploadForm.css';
 
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
+
+// AWS Rekognition setup
 AWS.config.update({
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
@@ -57,8 +65,36 @@ const Upload = () => {
         return;
       }
 
-      // Continue with uploading the file here (you can upload to your server or cloud storage)
-      setUploadStatus('File uploaded successfully!');
+      // Upload the file to Supabase Storage
+      const { data, error: uploadError } = await supabase.storage
+        .from('memories') // Your Supabase Storage bucket name
+        .upload(`memories/${file.name}`, file);
+
+      if (uploadError) {
+        setError('Error uploading the file to Supabase Storage.');
+        return;
+      }
+
+      // Get the file URL
+      const fileUrl = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/memories/${data.path}`;
+
+      // Store metadata in the memories database
+      const { data: insertData, error: dbError } = await supabase
+        .from('memories') // Your Supabase table name
+        .insert([
+          {
+            event_name: event,
+            description: description,
+            file_url: fileUrl,
+          },
+        ]);
+
+      if (dbError) {
+        setError('Error saving metadata in the database.');
+        return;
+      }
+
+      setUploadStatus('File uploaded and memory saved successfully!');
     } catch (err) {
       console.error(err);
       setError('Error uploading the file. Please try again.');
