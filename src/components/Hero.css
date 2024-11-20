@@ -39,8 +39,8 @@
   background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Soft shadow for depth */
   border-radius: 25px; /* Rounded corners for a modern feel */
-  padding: 0 20px; /* Spacious padding for a luxurious look */
-  width: 85%; /* Responsive width for different screen sizes */
+  padding: 20px; /* Spacious padding for better readability */
+  width: 90%; /* Responsive width for different screen sizes */
   max-width: 900px; /* Max width for content */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
 }
@@ -50,6 +50,7 @@
   transform: translate(-50%, -50%) scale(1.05); /* Slight scale effect for interaction */
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover for emphasis */
 }
+
 .hero-wrapper {
   position: relative;
   width: 100%;
@@ -62,7 +63,7 @@
 
 /* Main header (Title) styling */
 .hero h1 {
-  font-size: 5.5rem; /* Larger font size for more impact */
+  font-size: 3rem; /* Adjust font size for mobile */
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   letter-spacing: 4px;
@@ -80,18 +81,18 @@
 
 /* Subtitle text styling */
 .hero p {
-  font-size: 2rem;
+  font-size: 1.5rem; /* Adjust font size for mobile */
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
-  color: #00FFFF; /* Neon blue color */
+  color: #c300ff; /* Neon blue color */
   text-shadow: 
-    0 0 8px #00FFFF,    /* Inner blue glow */
-    0 0 16px #00FFFF,   /* Mid-range blue glow */
-    0 0 32px #00FFFF,   /* Outer blue glow */
-    0 0 64px #00BFFF,   /* Stronger blue shadow */
-    0 0 128px #00BFFF,  /* Wider blue glow */
-    0 0 160px #007FFF;  /* Very wide blue glow */
-  margin-bottom: 40px;
+    0 0 8px #aa00ff,    /* Inner blue glow */
+    0 0 16px #c300ffd7,   /* Mid-range blue glow */
+    0 0 32px #d900ffa9,   /* Outer blue glow */
+    0 0 64px #8000ff,   /* Stronger blue shadow */
+    0 0 128px #8800ffd5,  /* Wider blue glow */
+    0 0 160px #9500ff;  /* Very wide blue glow */
+  margin-bottom: 20px;
   font-style: italic;
   letter-spacing: 1px;
 }
@@ -108,10 +109,34 @@
   animation: textGlow 3s ease-in-out infinite; /* Smooth glowing effect */
 }
 
-/* Optional: Add a smooth scroll effect to the hero */
-html {
-  scroll-behavior: smooth;
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem; /* Smaller title font size */
+  }
+
+  .hero p {
+    font-size: 1.2rem; /* Smaller subtitle font size */
+  }
+
+  .hero-content {
+    width: 95%; /* Wider content box for smaller screens */
+    padding: 15px; /* Reduce padding */
+  }
 }
 
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem; /* Further reduced font size */
+  }
+
+  .hero p {
+    font-size: 1rem; /* Further reduced subtitle font size */
+  }
+
+  .hero-content {
+    border-radius: 15px; /* Reduce corner rounding */
+  }
+}
 
 
