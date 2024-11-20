@@ -65,10 +65,11 @@ const Upload = () => {
         return;
       }
 
-      // Upload the file to Supabase Storage
-      const { data, error: uploadError } = await supabase.storage
-        .from('memories') // Your Supabase Storage bucket name
-        .upload(`memories/${file.name}`, file);
+      // Sanitize file name to avoid issues with special characters
+    const sanitizedFileName = file.name.replace(/\s+/g, '_').toLowerCase();
+    const { data, error: uploadError } = await supabase.storage
+      .from('memories')
+      .upload(`memories/${sanitizedFileName}`, file);
 
       if (uploadError) {
         setError('Error uploading the file to Supabase Storage.');
