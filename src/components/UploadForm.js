@@ -83,9 +83,9 @@ const Upload = () => {
         .from('memories') // Your Supabase table name
         .insert([
           {
-            event_name: event,
+            event: event, // event_name column renamed to event
             description: description,
-            file_url: fileUrl,
+            image_path: fileUrl,
           },
         ]);
 
