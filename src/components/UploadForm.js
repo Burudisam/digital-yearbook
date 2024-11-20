@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar'; // Adjust the path if necessary
 import { supabase } from '../supabaseClient';
 import './UploadForm.css';
 
@@ -109,6 +110,9 @@ const Upload = () => {
 
   return (
     <div className="upload-page">
+      {/* Navbar */}
+      <Navbar />
+      
       {/* Aurora effect background */}
       <motion.div
         className="aurora-effect"
