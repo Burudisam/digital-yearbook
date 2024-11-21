@@ -44,15 +44,25 @@ const Signup = () => {
         .from('profile-pictures')
         .getPublicUrl(data.path).publicURL;
 
-      // Step 2: Insert the user data into the 'students' table
-      const { data: studentData, error: insertError } = await supabase
+      // Step 2: Use Supabase Auth to sign up the user
+      const { user, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (authError) {
+        throw authError;
+      }
+
+      // Step 3: Insert the user data into the 'students' table
+      const { error: insertError } = await supabase
         .from('students')
         .insert([
           {
             name,
             email,
-            password, // Make sure to hash/store the password securely
             profile_picture_url: profilePictureUrl,
+            user_id: user.id, // Store the user ID from Supabase Auth
           },
         ]);
 
