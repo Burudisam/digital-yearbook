@@ -12,32 +12,45 @@ const VotingSystem = () => {
   const [voteWeight, setVoteWeight] = useState(1);
   const [votesData, setVotesData] = useState(null);
 
+  // Fetch students and votes on component mount
   useEffect(() => {
     fetchStudents();
     fetchVotesData();
   }, []);
 
+  // Fetch students from 'students' table
   const fetchStudents = async () => {
     const { data, error } = await supabase.from('students').select('*');
-    if (error) console.error('Error fetching students:', error);
-    else setStudents(data);
+    if (error) {
+      console.error('Error fetching students:', error.message);
+      alert('Failed to load students. Please try again later.');
+    } else {
+      console.log('Students fetched:', data);
+      setStudents(data);
+    }
   };
 
+  // Fetch votes and format data for chart
   const fetchVotesData = async () => {
     const { data, error } = await supabase.from('votes').select('*');
-    if (error) console.error('Error fetching votes:', error);
-    else {
+    if (error) {
+      console.error('Error fetching votes:', error.message);
+    } else {
       const chartData = formatVotesForChart(data);
       setVotesData(chartData);
     }
   };
 
+  // Format votes data for chart display
   const formatVotesForChart = (votes) => {
     if (!votes || votes.length === 0) return null;
     const categoryCounts = votes.reduce((acc, vote) => {
-      acc[vote.category] = acc[vote.category] ? acc[vote.category] + vote.votes_count : vote.votes_count;
+      acc[vote.category] = acc[vote.category]
+        ? acc[vote.category] + vote.votes_count
+        : vote.votes_count;
       return acc;
     }, {});
+
     return {
       labels: Object.keys(categoryCounts),
       datasets: [
@@ -52,19 +65,35 @@ const VotingSystem = () => {
     };
   };
 
+  // Submit vote to 'votes' table
   const voteForStudent = async () => {
     if (!selectedStudent || !category) {
       alert('Please select a student and enter a category.');
       return;
     }
-    const { data, error } = await supabase
-      .from('votes')
-      .insert([{ student_id: selectedStudent, category, votes_count: voteWeight }]);
 
-    if (error) console.error('Error voting:', error);
-    else {
-      alert('Vote submitted successfully!');
-      fetchVotesData();
+    try {
+      console.log('Submitting vote:', { selectedStudent, category, voteWeight });
+
+      const { data, error } = await supabase.from('votes').insert([
+        {
+          student_id: selectedStudent,
+          category: category.trim(),
+          votes_count: voteWeight,
+        },
+      ]);
+
+      if (error) {
+        console.error('Error voting:', error.message);
+        alert(`Error voting: ${error.message}`);
+      } else {
+        alert('Vote submitted successfully!');
+        console.log('Vote inserted:', data);
+        fetchVotesData(); // Refresh chart data
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      alert('Unexpected error occurred while voting. Please try again.');
     }
   };
 
@@ -81,28 +110,38 @@ const VotingSystem = () => {
       <div className="voting-container">
         <h2 className="voting-title">Vote for Most Likely To...</h2>
         <div className="voting-form">
-          <label htmlFor="student" className="voting-label">Select Student:</label>
+          <label htmlFor="student" className="voting-label">
+            Select Student:
+          </label>
           <select
             id="student"
             className="voting-select"
-            onChange={e => setSelectedStudent(e.target.value)}
+            onChange={(e) => setSelectedStudent(e.target.value)}
             value={selectedStudent}
           >
             <option value="">Select a student</option>
-            {students.map(student => (
-              <option key={student.id} value={student.id}>{student.name}</option>
+            {students.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.name}
+              </option>
             ))}
           </select>
-          <label htmlFor="category" className="voting-label">Category:</label>
+
+          <label htmlFor="category" className="voting-label">
+            Category:
+          </label>
           <input
             id="category"
             type="text"
             className="voting-input"
             placeholder="Enter category"
             value={category}
-            onChange={e => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value)}
           />
-          <label htmlFor="weight" className="voting-label">Vote Weight:</label>
+
+          <label htmlFor="weight" className="voting-label">
+            Vote Weight:
+          </label>
           <input
             id="weight"
             type="number"
@@ -110,9 +149,12 @@ const VotingSystem = () => {
             max="5"
             className="voting-input"
             value={voteWeight}
-            onChange={e => setVoteWeight(parseInt(e.target.value))}
+            onChange={(e) => setVoteWeight(parseInt(e.target.value))}
           />
-          <button onClick={voteForStudent} className="vote-button">Vote</button>
+
+          <button onClick={voteForStudent} className="vote-button">
+            Vote
+          </button>
         </div>
         <div className="chart-container">
           {votesData ? (
@@ -136,4 +178,5 @@ const VotingSystem = () => {
 };
 
 export default VotingSystem;
+
 
