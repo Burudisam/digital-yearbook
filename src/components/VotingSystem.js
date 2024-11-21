@@ -1,9 +1,13 @@
+import { Chart, registerables } from 'chart.js'; // Import Chart and registerables
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { supabase } from '../supabaseClient';
 import Navbar from './Navbar';
 import './VotingSystem.css';
+
+// Register Chart.js components
+Chart.register(...registerables);
 
 const VotingSystem = () => {
   const [students, setStudents] = useState([]);
@@ -178,5 +182,4 @@ const VotingSystem = () => {
 };
 
 export default VotingSystem;
-
 
