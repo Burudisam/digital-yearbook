@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import './Auth.css';
+import { supabase } from './supabaseClient'; // Import the Supabase client
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -16,12 +17,60 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    // Signup logic here...
+
+    // Ensure all fields are filled
+    if (!name || !email || !password) {
+      setError('Please fill in all the fields.');
+      return;
+    }
+
+    if (!profilePictureFile) {
+      setError('Please add a profile picture.');
+      return;
+    }
+
+    try {
+      // Step 1: Upload the profile picture to Supabase Storage
+      const { data, error: uploadError } = await supabase.storage
+        .from('profile-pictures')
+        .upload(`${Date.now()}-${profilePictureFile.name}`, profilePictureFile);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      // Get the public URL of the uploaded image
+      const profilePictureUrl = supabase.storage
+        .from('profile-pictures')
+        .getPublicUrl(data.path).publicURL;
+
+      // Step 2: Insert the user data into the 'students' table
+      const { data: studentData, error: insertError } = await supabase
+        .from('students')
+        .insert([
+          {
+            name,
+            email,
+            password, // Make sure to hash/store the password securely
+            profile_picture_url: profilePictureUrl,
+          },
+        ]);
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      // If the sign-up is successful, navigate to another page (e.g., home)
+      navigate('/home');
+    } catch (err) {
+      setError(err.message || 'Error signing up. Please try again.');
+    }
   };
 
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setProfilePictureSrc(imageSrc);
+    setProfilePictureFile(imageSrc); // Optionally set the file for uploading
     setShowWebcam(false);
   };
 
