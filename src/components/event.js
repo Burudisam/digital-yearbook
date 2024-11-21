@@ -18,11 +18,12 @@ const Event = () => {
   const [selectedEventDetails, setSelectedEventDetails] = useState([]);
   const [reminder, setReminder] = useState('');
 
+  // Fetch events from Supabase
   useEffect(() => {
     const fetchEvents = async () => {
       const { data, error } = await supabase.from('events').select('*');
       if (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching events:', error.message);
       } else {
         setEvents(data);
       }
@@ -30,42 +31,92 @@ const Event = () => {
     fetchEvents();
   }, []);
 
+  // Fetch videos from Supabase storage
   useEffect(() => {
     const fetchVideos = async () => {
       const { data, error } = await supabase.storage.from('memories').list();
       if (error) {
-        console.error('Error fetching videos:', error);
+        console.error('Error fetching videos:', error.message);
       } else {
-        const videoUrls = data.map(video => `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/memories/${video.name}`);
+        const videoUrls = data.map(
+          (video) =>
+            `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/memories/${video.name}`
+        );
         setVideos(videoUrls);
       }
     };
     fetchVideos();
   }, []);
 
+  // Submit a new event
+  const handleEventSubmit = async () => {
+    if (!title || !description || !location || !highlights) {
+      alert('Please fill in all event details.');
+      return;
+    }
+
+    const { data, error } = await supabase.from('events').insert([
+      {
+        title,
+        event_date: date.toISOString(),
+        description,
+        location,
+        highlights,
+      },
+    ]);
+
+    if (error) {
+      console.error('Error saving event:', error.message);
+      alert('Failed to save the event. Please try again.');
+    } else {
+      alert('Event saved successfully!');
+      setEvents([...events, data[0]]); // Update the local state
+      setTitle('');
+      setDescription('');
+      setLocation('');
+      setHighlights('');
+    }
+  };
+
+  // Submit a new memory
   const handleMemorySubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('memories').insert([{ content: newMemory, event_title: title }]);
+    if (!newMemory || !title) {
+      alert('Please enter a memory and associate it with an event.');
+      return;
+    }
+
+    const { data, error } = await supabase.from('memories').insert([
+      { content: newMemory, event_title: title },
+    ]);
+
     if (error) {
-      console.error('Error saving memory:', error);
+      console.error('Error saving memory:', error.message);
+      alert('Failed to save the memory.');
     } else {
       setMemoryWall([...memoryWall, newMemory]);
       setNewMemory('');
     }
   };
 
+  // Handle date click
   const handleDateClick = (selectedDate) => {
-    const eventsForDate = events.filter(event => new Date(event.event_date).toDateString() === selectedDate.toDateString());
+    const eventsForDate = events.filter(
+      (event) =>
+        new Date(event.event_date).toDateString() === selectedDate.toDateString()
+    );
     setSelectedEventDetails(eventsForDate);
     setDate(selectedDate);
   };
 
+  // Handle reminder submission
   const handleReminderSubmit = (e) => {
     e.preventDefault();
-    // You can integrate email or SMS reminder APIs here
     alert(`Reminder set for: ${reminder}`);
+    setReminder('');
   };
 
+  // Share the event
   const handleShare = () => {
     alert(`Shared event: ${title}`);
   };
@@ -73,7 +124,7 @@ const Event = () => {
   return (
     <div className="event-page-container">
       <Navbar />
-      <div className="aurora-effect"></div> {/* Aurora Effect */}
+      <div className="aurora-effect"></div>
       <div className="event-container">
         <h1 className="event-title">{title || 'Event Title'}</h1>
         <input
@@ -87,7 +138,10 @@ const Event = () => {
           onChange={handleDateClick}
           value={date}
           tileClassName={({ date }) => {
-            const isEventDate = events.some(event => new Date(event.event_date).toDateString() === date.toDateString());
+            const isEventDate = events.some(
+              (event) =>
+                new Date(event.event_date).toDateString() === date.toDateString()
+            );
             return isEventDate ? 'event-date' : null;
           }}
         />
@@ -99,7 +153,9 @@ const Event = () => {
             onChange={(e) => setReminder(e.target.value)}
             className="reminder-input"
           />
-          <button onClick={handleReminderSubmit} className="reminder-button">Set Reminder</button>
+          <button onClick={handleReminderSubmit} className="reminder-button">
+            Set Reminder
+          </button>
         </div>
         <input
           type="text"
@@ -120,7 +176,12 @@ const Event = () => {
           onChange={(e) => setHighlights(e.target.value)}
           className="event-textarea"
         />
-        <button onClick={handleShare} className="share-button">Share Event</button>
+        <button onClick={handleEventSubmit} className="event-submit-button">
+          Submit Event
+        </button>
+        <button onClick={handleShare} className="share-button">
+          Share Event
+        </button>
 
         {/* Display Event Videos */}
         <div className="event-gallery">
@@ -148,11 +209,15 @@ const Event = () => {
               onChange={(e) => setNewMemory(e.target.value)}
               className="memory-input"
             />
-            <button type="submit" className="memory-submit-button">Submit</button>
+            <button type="submit" className="memory-submit-button">
+              Submit
+            </button>
           </form>
           <ul>
             {memoryWall.map((memory, index) => (
-              <li key={index} className="memory-item">{memory}</li>
+              <li key={index} className="memory-item">
+                {memory}
+              </li>
             ))}
           </ul>
         </div>
@@ -165,8 +230,12 @@ const Event = () => {
               <div key={index} className="event-item">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
-                <p><strong>Location:</strong> {event.location}</p>
-                <p><strong>Highlights:</strong> {event.highlights}</p>
+                <p>
+                  <strong>Location:</strong> {event.location}
+                </p>
+                <p>
+                  <strong>Highlights:</strong> {event.highlights}
+                </p>
               </div>
             ))}
           </div>
@@ -175,10 +244,18 @@ const Event = () => {
         {/* Social Share Section */}
         <div className="social-share">
           <h2>Share on Social Media</h2>
-          <FacebookShareButton url={window.location.href} quote={`Check out this event: ${title}`} className="social-button">
+          <FacebookShareButton
+            url={window.location.href}
+            quote={`Check out this event: ${title}`}
+            className="social-button"
+          >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
-          <TwitterShareButton url={window.location.href} title={`Check out this event: ${title}`} className="social-button">
+          <TwitterShareButton
+            url={window.location.href}
+            title={`Check out this event: ${title}`}
+            className="social-button"
+          >
             <TwitterIcon size={32} round />
           </TwitterShareButton>
         </div>
@@ -188,6 +265,7 @@ const Event = () => {
 };
 
 export default Event;
+
 
 
 
