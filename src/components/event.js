@@ -15,6 +15,7 @@ const Event = () => {
   const [events, setEvents] = useState([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState([]);
   const [countdown, setCountdown] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null); // Track selected date
 
   // Fetch events from Supabase
   useEffect(() => {
@@ -105,8 +106,9 @@ const Event = () => {
     }
   };
 
-  // Handle date click
+  // Handle date click and highlight selected date
   const handleDateClick = (selectedDate) => {
+    setSelectedDate(selectedDate); // Store selected date
     const eventsForDate = events.filter(
       (event) =>
         new Date(event.event_date).toDateString() === selectedDate.toDateString()
@@ -141,6 +143,9 @@ const Event = () => {
               (event) =>
                 new Date(event.event_date).toDateString() === date.toDateString()
             );
+            if (selectedDate && selectedDate.toDateString() === date.toDateString()) {
+              return 'selected-date'; // Apply class for selected date
+            }
             return isEventDate ? 'event-date' : null;
           }}
         />
@@ -232,6 +237,7 @@ const Event = () => {
 };
 
 export default Event;
+
 
 
 

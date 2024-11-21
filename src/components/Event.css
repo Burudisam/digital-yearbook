@@ -232,3 +232,13 @@
     margin-top: 20px;
   }
   
+/* Add this to your Event.css */
+.selected-date {
+    background-color: #4CAF50; /* Change to any color you prefer */
+    color: white;
+  }
+  
+  .event-date {
+    background-color: #FFEB3B; /* Optional: Add background for event dates */
+  }
+  
