@@ -7,7 +7,6 @@ import Navbar from './Navbar';
 
 const Event = () => {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [highlights, setHighlights] = useState('');
@@ -78,15 +77,15 @@ const Event = () => {
 
   // Submit a new event
   const handleEventSubmit = async () => {
-    if (!title || !description || !location || !highlights) {
-      alert('Please fill in all event details.');
+    if (!title || !description || !location || !highlights || !selectedDate) {
+      alert('Please fill in all event details and select a date.');
       return;
     }
 
     const { data, error } = await supabase.from('events').insert([
       {
         title,
-        event_date: date.toISOString(),
+        event_date: selectedDate.toISOString(), // Use selectedDate
         description,
         location,
         highlights,
@@ -103,18 +102,18 @@ const Event = () => {
       setDescription('');
       setLocation('');
       setHighlights('');
+      setSelectedDate(null); // Clear the selected date after submission
     }
   };
 
   // Handle date click and highlight selected date
-  const handleDateClick = (selectedDate) => {
-    setSelectedDate(selectedDate); // Store selected date
+  const handleDateClick = (date) => {
+    setSelectedDate(date); // Store selected date
     const eventsForDate = events.filter(
       (event) =>
-        new Date(event.event_date).toDateString() === selectedDate.toDateString()
+        new Date(event.event_date).toDateString() === date.toDateString()
     );
     setSelectedEventDetails(eventsForDate);
-    setDate(selectedDate);
   };
 
   // Share the event
@@ -137,7 +136,7 @@ const Event = () => {
         />
         <Calendar
           onChange={handleDateClick}
-          value={date}
+          value={selectedDate} // Bind to selectedDate
           tileClassName={({ date }) => {
             const isEventDate = events.some(
               (event) =>
@@ -197,7 +196,7 @@ const Event = () => {
         {/* Display Event Details for Selected Date */}
         {selectedEventDetails.length > 0 && (
           <div className="event-details">
-            <h2>Events on {date.toDateString()}</h2>
+            <h2>Events on {selectedDate.toDateString()}</h2>
             {selectedEventDetails.map((event, index) => (
               <div key={index} className="event-item">
                 <h3>{event.title}</h3>
