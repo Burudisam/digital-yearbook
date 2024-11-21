@@ -12,11 +12,9 @@ const Event = () => {
   const [location, setLocation] = useState('');
   const [highlights, setHighlights] = useState('');
   const [videos, setVideos] = useState([]);
-  const [memoryWall, setMemoryWall] = useState([]);
-  const [newMemory, setNewMemory] = useState('');
   const [events, setEvents] = useState([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState([]);
-  const [reminder, setReminder] = useState('');
+  const [countdown, setCountdown] = useState('');
 
   // Fetch events from Supabase
   useEffect(() => {
@@ -48,6 +46,35 @@ const Event = () => {
     fetchVideos();
   }, []);
 
+  // Handle countdown timer for the next event
+  useEffect(() => {
+    const nextEvent = events
+      .map((event) => new Date(event.event_date))
+      .filter((eventDate) => eventDate > new Date())
+      .sort((a, b) => a - b)[0];
+
+    if (nextEvent) {
+      const interval = setInterval(() => {
+        const now = new Date();
+        const timeLeft = nextEvent - now;
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          setCountdown('Event is happening now!');
+        } else {
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+          setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [events]);
+
   // Submit a new event
   const handleEventSubmit = async () => {
     if (!title || !description || !location || !highlights) {
@@ -78,27 +105,6 @@ const Event = () => {
     }
   };
 
-  // Submit a new memory
-  const handleMemorySubmit = async (e) => {
-    e.preventDefault();
-    if (!newMemory || !title) {
-      alert('Please enter a memory and associate it with an event.');
-      return;
-    }
-
-    const { data, error } = await supabase.from('memories').insert([
-      { content: newMemory, event_title: title },
-    ]);
-
-    if (error) {
-      console.error('Error saving memory:', error.message);
-      alert('Failed to save the memory.');
-    } else {
-      setMemoryWall([...memoryWall, newMemory]);
-      setNewMemory('');
-    }
-  };
-
   // Handle date click
   const handleDateClick = (selectedDate) => {
     const eventsForDate = events.filter(
@@ -107,13 +113,6 @@ const Event = () => {
     );
     setSelectedEventDetails(eventsForDate);
     setDate(selectedDate);
-  };
-
-  // Handle reminder submission
-  const handleReminderSubmit = (e) => {
-    e.preventDefault();
-    alert(`Reminder set for: ${reminder}`);
-    setReminder('');
   };
 
   // Share the event
@@ -145,17 +144,9 @@ const Event = () => {
             return isEventDate ? 'event-date' : null;
           }}
         />
-        <div className="reminder-section">
-          <input
-            type="text"
-            placeholder="Set a reminder for this event"
-            value={reminder}
-            onChange={(e) => setReminder(e.target.value)}
-            className="reminder-input"
-          />
-          <button onClick={handleReminderSubmit} className="reminder-button">
-            Set Reminder
-          </button>
+        <div className="countdown-section">
+          <h2>Countdown to Next Event</h2>
+          <p>{countdown || 'No upcoming events'}</p>
         </div>
         <input
           type="text"
@@ -196,30 +187,6 @@ const Event = () => {
               ))}
             </div>
           )}
-        </div>
-
-        {/* Display Memory Wall */}
-        <div className="memory-wall">
-          <h2>Memory Wall</h2>
-          <form onSubmit={handleMemorySubmit} className="memory-form">
-            <input
-              type="text"
-              placeholder="Share a memory..."
-              value={newMemory}
-              onChange={(e) => setNewMemory(e.target.value)}
-              className="memory-input"
-            />
-            <button type="submit" className="memory-submit-button">
-              Submit
-            </button>
-          </form>
-          <ul>
-            {memoryWall.map((memory, index) => (
-              <li key={index} className="memory-item">
-                {memory}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Display Event Details for Selected Date */}
@@ -265,6 +232,7 @@ const Event = () => {
 };
 
 export default Event;
+
 
 
 
